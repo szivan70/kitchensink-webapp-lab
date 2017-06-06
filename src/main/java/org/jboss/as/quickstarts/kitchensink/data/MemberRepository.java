@@ -16,13 +16,14 @@
  */
 package org.jboss.as.quickstarts.kitchensink.data;
 
+import java.util.List;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import java.util.List;
 
 import org.jboss.as.quickstarts.kitchensink.model.Member;
 
@@ -31,6 +32,9 @@ public class MemberRepository {
 
     @Inject
     private EntityManager em;
+
+    @Inject
+    private MemberCache cache;
 
     public Member findById(Long id) {
         return em.find(Member.class, id);
@@ -48,6 +52,15 @@ public class MemberRepository {
     }
 
     public List<Member> findAllOrderedByName() {
+        List<Member> members = cache.loadFromCache();
+        if ( members == null || members.isEmpty() ) {
+            members = findAllOrderedByNameFromDS();
+            cache.loadIntoCache(members);
+        }
+        return members;
+    }
+
+    private List<Member> findAllOrderedByNameFromDS() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Member> criteria = cb.createQuery(Member.class);
         Root<Member> member = criteria.from(Member.class);
@@ -56,5 +69,9 @@ public class MemberRepository {
         // criteria.select(member).orderBy(cb.asc(member.get(Member_.name)));
         criteria.select(member).orderBy(cb.asc(member.get("name")));
         return em.createQuery(criteria).getResultList();
+    }
+
+    public void invalidateCache() {
+        cache.invalidateCache();
     }
 }

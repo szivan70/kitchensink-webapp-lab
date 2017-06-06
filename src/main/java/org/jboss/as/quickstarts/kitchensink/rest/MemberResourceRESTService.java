@@ -67,6 +67,13 @@ public class MemberResourceRESTService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Path("/status")
+    public String status() {
+		return "HotRod Service: [" + System.getenv("HOTROD_SERVICE") + ":" + System.getenv("HOTROD_SERVICE_PORT") + "]";
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
     public List<Member> listAllMembers() {
         return repository.findAllOrderedByName();
     }
@@ -98,7 +105,7 @@ public class MemberResourceRESTService {
             validateMember(member);
 
             registration.register(member);
-
+            repository.invalidateCache();
             // Create an "ok" response
             builder = Response.ok();
         } catch (ConstraintViolationException ce) {
