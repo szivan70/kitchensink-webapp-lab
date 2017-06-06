@@ -98,7 +98,7 @@ public class MemberResourceRESTService {
             validateMember(member);
 
             registration.register(member);
-
+            repository.invalidateCache();
             // Create an "ok" response
             builder = Response.ok();
         } catch (ConstraintViolationException ce) {
