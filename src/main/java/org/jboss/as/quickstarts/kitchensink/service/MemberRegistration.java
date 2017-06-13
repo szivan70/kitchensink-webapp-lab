@@ -16,12 +16,13 @@
  */
 package org.jboss.as.quickstarts.kitchensink.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 
 import org.jboss.as.quickstarts.kitchensink.data.MemberCache;
 import org.jboss.as.quickstarts.kitchensink.model.Member;
@@ -34,18 +35,15 @@ public class MemberRegistration {
     private Logger log;
 
     @Inject
-    private EntityManager em;
+    private MemberCache cache;
 
     @Inject
     private Event<Member> memberEventSrc;
 
-    @Inject
-    private MemberCache cache;
-
     public void register(Member member) throws Exception {
         log.info("Registering " + member.getName());
-        em.persist(member);
-        cache.invalidateCache();
+        List<Member> initialMembers = new ArrayList<Member>(0);
+        cache.loadIntoCache(initialMembers);
         memberEventSrc.fire(member);
     }
 }
