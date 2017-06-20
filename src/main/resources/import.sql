@@ -90,7 +90,7 @@ insert into Member (id, name, email, phone_number) values (70,'Michal Kall',			'
 insert into Member (id, name, email, phone_number) values (71,'Bee Chisnall',			'861609570'		,'861609570');
 insert into Member (id, name, email, phone_number) values (72,'Ailis Guess',			'866864921'		,'866864921');
 insert into Member (id, name, email, phone_number) values (73,'Lizbeth Toseland',		'814511359'		,'814511359');
-insert into Member (id, name, email, phone_number) values (74,'Alano O'Connel',			'374117767'		,'374117767');
+insert into Member (id, name, email, phone_number) values (74,'Alano OConnel',			'374117767'		,'374117767');
 insert into Member (id, name, email, phone_number) values (75,'Filia Saffer',			'331074686'		,'331074686');
 insert into Member (id, name, email, phone_number) values (76,'Sammy Cloy',			'638549190'		,'638549190');
 insert into Member (id, name, email, phone_number) values (77,'Brady Brabham',			'592988992'		,'592988992');
